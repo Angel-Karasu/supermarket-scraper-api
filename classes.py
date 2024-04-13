@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from enum import Enum
 from requests import Session
 
 @dataclass
@@ -21,6 +22,11 @@ class Product:
 
     price_unit:str
     quantity_unit:str
+
+class SortBy(str, Enum):
+    brand = 'brand'
+    price_absolute = 'price_absolute'
+    price_relative = 'price_relative'
 
 @dataclass
 class SuperMarket:
