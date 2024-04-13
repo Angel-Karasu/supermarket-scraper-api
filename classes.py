@@ -24,9 +24,9 @@ class Product:
     quantity_unit:str
 
 class SortBy(str, Enum):
-    brand = 'brand'
-    price_absolute = 'price_absolute'
-    price_relative = 'price_relative'
+    price_absolute = 'Price absolute'
+    price_relative = 'Price relative'
+    relevant = 'Relevant'
 
 @dataclass
 class SuperMarket:
@@ -36,4 +36,4 @@ class SuperMarket:
     base_url:str
     cookies:dict[str, str]
 
-    def search_products(self, session:Session, search:str, page:int, sortby:str, order:str) -> list[Product]: return []
+    def search_products(self, search:str, page:int, sortby:SortBy, descending_order:bool) -> list[Product]: return []

@@ -1,9 +1,20 @@
-from requests import Session
+from heapq import merge
+from itertools import zip_longest
 
-from classes import SuperMarket
+from classes import Product, SortBy, SuperMarket
 from supermarkets import intermarche
 
-session = Session()
-session.headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0'
+class SuperMarkets:
+    supermarkets:list[SuperMarket] = intermarche.get_supermarkets()
+    max_id:int = len(supermarkets) - 1
 
-SUPERMARKETS: list[SuperMarket] = intermarche.get_supermarkets(session)
+    def search_products(self, list_supermarket_id: list[int], search:str, page:int, sortby:SortBy, descending_order:bool) -> list[Product]:
+        list_products:list[list[Product]] = [self.supermarkets[i].search_products(search, page, sortby, descending_order) for i in list_supermarket_id]
+
+        return (
+            [product for products in zip_longest(*list_products, fillvalue=None) for product in products if product is not None]
+            if sortby == SortBy.relevant else
+            list(merge(*list_products, key=lambda product: vars(product)[sortby.name], reverse=descending_order))
+        )
+
+SUPERMARKETS = SuperMarkets()

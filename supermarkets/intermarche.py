@@ -1,20 +1,17 @@
-from bs4 import BeautifulSoup
-from json import loads
-from requests import Session
-
-from classes import Address, Product, SuperMarket
+from classes import Address, Product, SortBy, SuperMarket
+from scrap import bs4_request, json_request
 
 INTERMARCHE_BASE_URL = 'www.intermarche.com'
 
 class InterMarche(SuperMarket):
-    def search_products(self, session:Session, search:str, page:int, sortby:str, ascending_order:bool) -> list[Product]:
-        sortby = 'prix' if sortby == 'price_absolute' else 'prixkg' if sortby == 'price_relative' else 'pertinence'
-        ascending_order = 'croissant' if ascending_order else 'decroissant'
+    def search_products(self, search:str, page:int, sortby:SortBy, descending_order:bool) -> list[Product]:
+        sort = 'prix' if sortby == SortBy.price_absolute else 'prixkg' if sortby == SortBy.price_relative else 'pertinence'
+        order = 'decroissant' if descending_order else 'croissant'
 
-        soup = BeautifulSoup(session.get(
-            f'https://{INTERMARCHE_BASE_URL}/recherche/{search}?page={page}&trier={sortby}&ordre={ascending_order}',
+        soup = bs4_request(
+            f'https://{INTERMARCHE_BASE_URL}/recherche/{search}?page={page}&trier={sort}&ordre={order}',
             cookies=self.cookies
-        ).content, 'lxml')
+        )
 
         products = []
 
@@ -32,13 +29,14 @@ class InterMarche(SuperMarket):
 
         return products
 
-def get_supermarkets(session:Session) -> list[SuperMarket]:
+def get_supermarkets() -> list[SuperMarket]:
     supermarkets = []
 
-    for market in loads(session.get(f'https://{INTERMARCHE_BASE_URL}/api/service/pdvs/v4/pdvs/zone?r=10000',
-            headers={'x-red-device': 'red_fo_desktop', 'x-red-version': '3'},
-            cookies={'datadome': 'y3wBsQjboarO8qlMEYZ62GeCJ_oG_m0lohMRkWpgkmfaVssb5d~~sPaYm4H8zUP4tYqIwlHXIwWbtyyohfvUG0Ml1XZVgWDTrUVCFSvNUJsMN8tBf3Szckk40emoQqRZ'}
-        ).text)['resultats']:
+    for market in json_request(
+        f'https://{INTERMARCHE_BASE_URL}/api/service/pdvs/v4/pdvs/zone?r=10000',
+        headers={'x-red-device': 'red_fo_desktop', 'x-red-version': '3'},
+        cookies={'datadome': 'y3wBsQjboarO8qlMEYZ62GeCJ_oG_m0lohMRkWpgkmfaVssb5d~~sPaYm4H8zUP4tYqIwlHXIwWbtyyohfvUG0Ml1XZVgWDTrUVCFSvNUJsMN8tBf3Szckk40emoQqRZ'}
+    )['resultats']:
 
         name = 'Intermarché ' + market['modelLabel'].title()
         add = market['addresses'][0]
