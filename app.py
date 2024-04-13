@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Path, Query
+from fastapi.middleware.cors import CORSMiddleware
 from uvicorn import run
 
 from classes import Product, SortBy, SuperMarket
@@ -8,6 +9,8 @@ HOST = '0.0.0.0'
 PORT = 5500
 
 app = FastAPI()
+
+app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_methods=['*'], allow_headers=['*'])
 
 @app.get('/get_sortby_methods')
 def get_sortby_methods() -> list[str]: return [sortby.name for sortby in SortBy]
