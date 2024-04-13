@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Path, Query
 from fastapi.middleware.cors import CORSMiddleware
+from functools import reduce
 from uvicorn import run
 
 from classes import Product, SortBy, SuperMarket
@@ -16,7 +17,11 @@ app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_methods=['*'], all
 def get_sortby_methods() -> list[str]: return [sortby.name for sortby in SortBy]
 
 @app.get('/get_supermarkets')
-def get_supermarkets() -> list[SuperMarket]: return SUPERMARKETS.supermarkets
+def get_supermarkets(name:str = '', address:str = '', city:str = '', postal_code:str = '') -> list[tuple[int, SuperMarket]]:
+    return [
+        (id, supermarket) for id, supermarket in enumerate(SUPERMARKETS.supermarkets)
+        if name in supermarket.name and address in supermarket.address.address and city in supermarket.address.city and postal_code in str(supermarket.address.postal_code)
+    ]
 
 @app.get('/search_product')
 def search_product(
