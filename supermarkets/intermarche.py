@@ -1,3 +1,5 @@
+from json import dumps
+
 from classes import Address, Product, SortBy, SuperMarket
 from scrap import bs4_request, json_request
 
@@ -44,7 +46,7 @@ def get_supermarkets() -> list[SuperMarket]:
 
         supermarkets.append(InterMarche(
             name, address, INTERMARCHE_BASE_URL,
-            {'itm_pdv': str({'ref': market['entityCode'], 'name': f'{name.split()[1]} {address.city}', 'city': address.city}).replace("'", '"')}
+            {'itm_pdv': dumps({'ref': market['entityCode'], 'name': f'{name.split()[1]} {address.city}', 'city': address.city})}
         ))
 
     return supermarkets
