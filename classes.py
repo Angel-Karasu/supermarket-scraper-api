@@ -24,9 +24,9 @@ class Product:
     quantity_unit:str
 
 class SortBy(str, Enum):
-    price_absolute = 'Price absolute'
-    price_relative = 'Price relative'
-    relevant = 'Relevant'
+    price_absolute = 'price_absolute'
+    price_relative = 'price_relative'
+    relevant = 'relevant'
 
 @dataclass
 class SuperMarket:

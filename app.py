@@ -10,7 +10,7 @@ PORT = 5500
 app = FastAPI()
 
 @app.get('/get_sortby_methods')
-def get_sortby_methods() -> list[tuple[str, str]]: return [(sortby.name, sortby.value) for sortby in SortBy]
+def get_sortby_methods() -> list[str]: return [sortby.name for sortby in SortBy]
 
 @app.get('/get_supermarkets')
 def get_supermarkets() -> list[SuperMarket]: return SUPERMARKETS.supermarkets
