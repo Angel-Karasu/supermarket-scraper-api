@@ -7,9 +7,6 @@ class Address:
     address:str
     postal_code:int
     city:str
-    
-    latitude:float
-    longitude:float
 
 @dataclass
 class Product:

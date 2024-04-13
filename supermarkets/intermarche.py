@@ -42,7 +42,7 @@ def get_supermarkets() -> list[SuperMarket]:
 
         name = 'Intermarché ' + market['modelLabel'].title()
         add = market['addresses'][0]
-        address = Address(add['address'], int(add['postCode']), add['townLabel'], **{l:float(add[l]) for l in ['latitude', 'longitude']})
+        address = Address(add['address'], int(add['postCode']), add['townLabel'])
 
         supermarkets.append(InterMarche(
             name, address, INTERMARCHE_BASE_URL,
