@@ -12,7 +12,8 @@ class InterMarche(SuperMarket):
 
         soup = bs4_request(
             f'https://{INTERMARCHE_BASE_URL}/recherche/{search}?page={page}&trier={sort}&ordre={order}',
-            cookies=self.cookies
+            cookies=self.cookies,
+            html_element={'div': {'class':'stime-product-card-course'}}
         )
 
         products = []
