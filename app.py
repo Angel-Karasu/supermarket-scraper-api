@@ -27,12 +27,12 @@ def search_product(
 ) -> list[tuple[int, Product]]: return SUPERMARKETS.search_products(list_supermarket_id, search, page, sortby, descending_order)
 
 @app.get('/supermarket/{id}/get_supermarket')
-def supermarket_get_supermarket(id:int = Path(ge=0, lt=SUPERMARKETS.max_id)) -> SuperMarket: return SUPERMARKETS.supermarkets[id]
+def supermarket_get_supermarket(id:int = Path(ge=0, le=SUPERMARKETS.max_id)) -> SuperMarket: return SUPERMARKETS.supermarkets[id]
 
 @app.get('/supermarket/{id}/search_product')
 def supermarket_search_product(
     search:str, page:int = 1, sortby:SortBy = SortBy.relevant, descending_order:bool = False,
-    id:int = Path(ge=0, lt=SUPERMARKETS.max_id)    
-) -> list[Product]: return SUPERMARKETS.supermarkets[id].search_product(search, page, sortby, descending_order)
+    id:int = Path(ge=0, le=SUPERMARKETS.max_id)    
+) -> list[Product]: return SUPERMARKETS.supermarkets[id].search_products(search, page, sortby, descending_order)
 
 if __name__ == '__main__': run('app:app', host=HOST, port=PORT, reload=True)

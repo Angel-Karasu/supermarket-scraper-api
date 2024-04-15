@@ -5,7 +5,7 @@ from requests import Session
 @dataclass
 class Address:
     address:str
-    postal_code:int
+    postal_code:int|str
     city:str
 
     def include(self, address:'Address') -> bool:
@@ -37,6 +37,9 @@ class SuperMarket:
     cookies:dict[str, str]
 
     def include(self, supermarket:'SuperMarket') -> bool:
-        return self.name in supermarket.name and self.address.include(supermarket.address)
+        return (
+            (self.name in supermarket.name or supermarket.name in self.name) and
+            (self.address.include(supermarket.address) or supermarket.address.include(self.address))
+        )
 
     def search_products(self, search:str, page:int, sortby:SortBy, descending_order:bool) -> list[Product]: return []
