@@ -19,6 +19,7 @@ pip install -r requirements.txt;
 ## Compatible supermarkets
 
 - Intermarché
+- Monoprix
 
 ## To do
 
