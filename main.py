@@ -2,10 +2,10 @@ from heapq import merge
 from itertools import zip_longest
 
 from classes import Product, SortBy, SuperMarket
-from supermarkets import intermarche
+from supermarkets import intermarche, monoprix
 
 class SuperMarkets:
-    supermarkets:list[SuperMarket] = intermarche.get_supermarkets()
+    supermarkets:list[SuperMarket] = intermarche.get_supermarkets() + monoprix.get_supermarkets()
     max_id:int = len(supermarkets) - 1
 
     def search_products(self, list_supermarket_id: list[int], search:str, page:int, sortby:SortBy, descending_order:bool) -> list[tuple[int, Product]]:
