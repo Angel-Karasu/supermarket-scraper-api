@@ -14,7 +14,7 @@ pip install -r requirements.txt;
 ## How to use
 
 1. Run the python file : `app.py`
-2. Go on `localhost:5500`
+2. Go on `localhost:5500/docs`
 
 ## Compatible supermarkets
 
