@@ -1,3 +1,4 @@
+#!/bin/python
 from fastapi import FastAPI, Path, Query
 from fastapi.middleware.cors import CORSMiddleware
 from uvicorn import run

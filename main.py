@@ -1,3 +1,4 @@
+#!/bin/python
 from heapq import merge
 from itertools import zip_longest
 
