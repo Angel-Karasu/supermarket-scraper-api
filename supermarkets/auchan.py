@@ -20,7 +20,7 @@ class Auchan(SuperMarket):
             try: products.append(Product(
                 product.select_one('[itemprop="brand"]').text,
                 product.select_one('.product-thumbnail__description').text.split('\n')[1].strip(),
-                product.select_one('img')['src'],
+                product.select_one('[itemprop="image"]')['content'],
                 'https://' + BASE_URL + product.select_one('a')['href'],
                 float(product.select_one('[itemprop="price"]')['content']),
                 float(product.select_one('[itemprop="price"]')['content']),
