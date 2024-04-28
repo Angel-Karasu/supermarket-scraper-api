@@ -20,7 +20,7 @@ pip install -r requirements.txt;
 
 - Auchan (Unable to select a specific supermarket)
 - Intermarché
-- Monoprix
+- Monoprix (Unable to select a specific supermarket)
 
 ## To do
 
