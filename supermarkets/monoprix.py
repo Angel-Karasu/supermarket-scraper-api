@@ -7,7 +7,7 @@ class Monoprix(SuperMarket):
     def search_products(self, search:str, page:int, sortby:SortBy, descending_order:bool) -> list[Product]:
         if page > 1: return []
         sort = 'price' if sortby == SortBy.price_absolute else 'pricePer' if sortby == SortBy.price_relative else ''
-        sort += 'De' if descending_order else 'A' + 'scending'
+        sort += ('De' if descending_order else 'A') + 'scending'
 
         soup = bs4_request(
             f'https://{BASE_URL}/products/search?q={search}&sortBy={sort}',
