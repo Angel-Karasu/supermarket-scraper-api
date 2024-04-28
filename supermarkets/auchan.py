@@ -29,7 +29,7 @@ class Auchan(SuperMarket):
                 price_absolute,
                 price_absolute if price_relative is None else float(price_relative.text.split('€')[0].replace(',', '.')),
                 '€',
-                'u' if price_relative is None else price_relative.plit('/ ')[1],
+                'u' if price_relative is None else price_relative.text.split('/ ')[1],
             ))
             except: pass
 
