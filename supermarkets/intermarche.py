@@ -8,7 +8,7 @@ BASE_URL = 'www.intermarche.com'
 class InterMarche(SuperMarket):
     def search_products(self, search:str, page:int, sortby:SortBy, descending_order:bool) -> list[Product]:
         sort = 'prix' if sortby == SortBy.price_absolute else 'prixkg' if sortby == SortBy.price_relative else 'pertinence'
-        order = 'de' if descending_order else '' + 'croissant'
+        order = ('de' if descending_order else '') + 'croissant'
 
         soup = bs4_request(
             f'https://{BASE_URL}/recherche/{search}?page={page}&trier={sort}&ordre={order}',
