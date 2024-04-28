@@ -16,6 +16,7 @@ class Product:
     brand:str
     description:str
     image_url:str
+    product_url:str
 
     price_absolute:float
     price_relative:float

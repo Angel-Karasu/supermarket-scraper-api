@@ -23,6 +23,7 @@ class InterMarche(SuperMarket):
                 product.select_one('.stime-product--details__summary > p').text,
                 product.select_one('.stime-product--details__title').text,
                 product.select_one('.stime-product--details__image')['src'],
+                'https://' + BASE_URL + product.select_one('a')['href'],
                 float(product.select_one('.product--price').text.split()[0].replace(',', '.')),
                 float(product.select_one('.content-S-R').text.split()[-2].replace(',', '.')),
                 '€',

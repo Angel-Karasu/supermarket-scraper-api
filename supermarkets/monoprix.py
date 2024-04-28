@@ -11,15 +11,17 @@ class Monoprix(SuperMarket):
 
         soup = bs4_request(
             f'https://{BASE_URL}/products/search?q={search}&sortBy={sort}',
-            html_element={'div':{'class':'components__ProductCardContainer-sc-filq44-2'}}
+            html_element={'div':{'class':'product-card-container'}}
         )
 
         products = []
 
-        for product in soup.select('.components__ProductCardContainer-sc-filq44-2'):
+        for product in soup.select('.product-card-container'):
             if product.select_one('[data-test="fop-featured"]') is None:
+                product_url = 'https://' + BASE_URL + product.select_one('a')['href']
+                
                 product_data = bs4_to_json(bs4_request(
-                    f'https://{BASE_URL}' + product.select_one('a')['href'],
+                    product_url,
                     html_element={'script':{'data-test':'product-details-structured-data'}}
                 ).select_one('[data-test="product-details-structured-data"]'))
 
@@ -29,6 +31,7 @@ class Monoprix(SuperMarket):
                     product_data['brand'],
                     product_data['name'],
                     product_data['image'][0],
+                    product_url,
                     float(product_data['offers']['price']),
                     float(price_per_unit[0].replace(',', '.').replace('(', '')),
                     '€',
