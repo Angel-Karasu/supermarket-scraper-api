@@ -13,6 +13,9 @@ app = FastAPI()
 
 app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_methods=['*'], allow_headers=['*'])
 
+@app.get('/get_max_id')
+def get_max_id() -> int: return SUPERMARKETS.max_id
+
 @app.get('/get_sortby_methods')
 def get_sortby_methods() -> list[str]: return [sortby.name for sortby in SortBy]
 
