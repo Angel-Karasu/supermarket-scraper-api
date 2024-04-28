@@ -17,15 +17,19 @@ class Auchan(SuperMarket):
         products = []
 
         for product in soup.select('article'):
+            brand = product.select_one('[itemprop="brand"]')
+            price_absolute = float(product.select_one('[itemprop="price"]')['content'])
+            price_relative = product.select_one('.product-thumbnail__attributes span[data-offer-id]')
+            
             try: products.append(Product(
-                product.select_one('[itemprop="brand"]').text,
-                product.select_one('.product-thumbnail__description').text.split('\n')[1].strip(),
+                product.select('.product-thumbnail__details span')[1].text if brand is None else brand.text,
+                product.select_one('.product-thumbnail__description').text.split('\n')[-2].strip(),
                 product.select_one('[itemprop="image"]')['content'],
                 'https://' + BASE_URL + product.select_one('a')['href'],
-                float(product.select_one('[itemprop="price"]')['content']),
-                float(product.select_one('[itemprop="price"]')['content']),
+                price_absolute,
+                price_absolute if price_relative is None else float(price_relative.text.split('€')[0].replace(',', '.')),
                 '€',
-                '',
+                'u' if price_relative is None else price_relative.plit('/ ')[1],
             ))
             except: pass
 
