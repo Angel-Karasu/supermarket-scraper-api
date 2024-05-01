@@ -1,5 +1,5 @@
 from classes import Address, Product, SortBy, SuperMarket
-from scrap import bs4_request
+from scrap import bs4_request, get_redirect_url
 
 BASE_URL = 'www.auchan.fr'
 
@@ -10,7 +10,8 @@ class Auchan(SuperMarket):
         sort = 'default' if sortby == SortBy.relevant else sort
 
         soup = bs4_request(
-            f'https://{BASE_URL}/recherche?text={search}&sort={sort}&page={page}',
+            get_redirect_url(f'https://{BASE_URL}/recherche?text={search}')+ f'&sort={sort}&page={page}',
+            cookies=self.cookies,
             html_element={'article'}
         )
 
@@ -37,4 +38,6 @@ class Auchan(SuperMarket):
         return products
 
 def get_supermarkets() -> list[SuperMarket]:
-    return [Auchan('Auchan', Address('', '', ''), BASE_URL, {})]
+    return [Auchan('Auchan', Address('', '', ''), BASE_URL, {
+        'lark-journey': '0150148c-ed97-419e-a30c-d796fdf92aca',
+    })]
