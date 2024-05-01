@@ -1,7 +1,5 @@
 from utils.classes import Address, Product, SortBy, SuperMarket
 
-BASE_URL = 'www.casino.fr'
-
 class Casino(SuperMarket):
     def search_products(self, search:str, page:int, sortby:SortBy, descending_order:bool) -> list[Product]:
         sort = 52 + (sortby == SortBy.price_absolute) + 2*(sortby == SortBy.price_relative)
@@ -40,4 +38,4 @@ class Casino(SuperMarket):
         return products
 
 def get_supermarkets() -> list[SuperMarket]:
-    return [Casino('Casino', Address('', '', ''), BASE_URL, {'JSESSIONID': 'PKu7m303EF-vtlORmZqFXmXZc2Q0jwHoOSEP_SAPSBFjjvtrs8JJllOELB3ulICZ'})]
+    return [Casino('Casino', Address('', '', ''), 'www.casino.fr', {'JSESSIONID': 'PKu7m303EF-vtlORmZqFXmXZc2Q0jwHoOSEP_SAPSBFjjvtrs8JJllOELB3ulICZ'})]

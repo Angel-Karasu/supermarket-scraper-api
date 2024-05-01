@@ -2,8 +2,6 @@ from json import loads
 
 from utils.classes import Address, Product, SortBy, SuperMarket
 
-BASE_URL = 'courses.monoprix.fr'
-
 class Monoprix(SuperMarket):
     def search_products(self, search:str, page:int, sortby:SortBy, descending_order:bool) -> list[Product]:
         if page > 1: return []
@@ -42,4 +40,4 @@ class Monoprix(SuperMarket):
         return products
 
 def get_supermarkets() -> list[SuperMarket]:
-    return [Monoprix('Monoprix', Address('', '', ''), BASE_URL, {})]
+    return [Monoprix('Monoprix', Address('', '', ''), 'courses.monoprix.fr', {})]

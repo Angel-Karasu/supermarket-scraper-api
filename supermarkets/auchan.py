@@ -1,8 +1,6 @@
 from utils.classes import Address, Product, SortBy, SuperMarket
 from utils.scrap import get_redirect_url
 
-BASE_URL = 'www.auchan.fr'
-
 class Auchan(SuperMarket):
     def search_products(self, search:str, page:int, sortby:SortBy, descending_order:bool) -> list[Product]:
         sort = ('de' if descending_order else 'a') + 'sc_'
@@ -37,6 +35,6 @@ class Auchan(SuperMarket):
         return products
 
 def get_supermarkets() -> list[SuperMarket]:
-    return [Auchan('Auchan', Address('', '', ''), BASE_URL, {
+    return [Auchan('Auchan', Address('', '', ''), 'www.auchan.fr', {
         'lark-journey': '0150148c-ed97-419e-a30c-d796fdf92aca',
     })]

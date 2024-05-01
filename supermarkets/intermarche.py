@@ -3,8 +3,6 @@ from json import dumps
 from utils.classes import Address, Product, SortBy, SuperMarket
 from utils.scrap import json_request
 
-BASE_URL = 'www.intermarche.com'
-
 class InterMarche(SuperMarket):
     def search_products(self, search:str, page:int, sortby:SortBy, descending_order:bool) -> list[Product]:
         sort = 'prix' if sortby == SortBy.price_absolute else 'prixkg' if sortby == SortBy.price_relative else 'pertinence'
@@ -35,6 +33,8 @@ class InterMarche(SuperMarket):
         return products
 
 def get_supermarkets() -> list[SuperMarket]:
+    BASE_URL = 'www.intermarche.com'
+    
     supermarkets = []
 
     for market in json_request(
