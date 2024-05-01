@@ -1,5 +1,5 @@
-from classes import Address, Product, SortBy, SuperMarket
-from scrap import bs4_request, get_redirect_url
+from utils.classes import Address, Product, SortBy, SuperMarket
+from utils.scrap import bs4_request, get_redirect_url
 
 BASE_URL = 'www.auchan.fr'
 

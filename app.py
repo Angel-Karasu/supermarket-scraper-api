@@ -3,7 +3,7 @@ from fastapi import FastAPI, Path, Query
 from fastapi.middleware.cors import CORSMiddleware
 from uvicorn import run
 
-from classes import Address, Product, SortBy, SuperMarket
+from utils.classes import Address, Product, SortBy, SuperMarket
 from main import SUPERMARKETS
 
 HOST = '0.0.0.0'

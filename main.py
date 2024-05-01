@@ -2,7 +2,7 @@
 from heapq import merge
 from itertools import zip_longest
 
-from classes import Product, SortBy, SuperMarket
+from utils.classes import Product, SortBy, SuperMarket
 from supermarkets import auchan, casino, intermarche, monoprix
 
 class SuperMarkets:

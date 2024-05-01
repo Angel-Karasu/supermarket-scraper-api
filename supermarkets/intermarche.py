@@ -1,7 +1,7 @@
 from json import dumps
 
-from classes import Address, Product, SortBy, SuperMarket
-from scrap import bs4_request, json_request
+from utils.classes import Address, Product, SortBy, SuperMarket
+from utils.scrap import bs4_request, json_request
 
 BASE_URL = 'www.intermarche.com'
 

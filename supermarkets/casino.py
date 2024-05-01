@@ -1,5 +1,5 @@
-from classes import Address, Product, SortBy, SuperMarket
-from scrap import bs4_request
+from utils.classes import Address, Product, SortBy, SuperMarket
+from utils.scrap import bs4_request
 
 BASE_URL = 'www.casino.fr'
 
