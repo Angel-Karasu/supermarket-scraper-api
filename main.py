@@ -9,10 +9,10 @@ class SuperMarkets:
     supermarkets:list[SuperMarket] = sum(map(lambda sm:sm.get_supermarkets(), [auchan, intermarche, monoprix]), [])
     max_id:int = len(supermarkets) - 1
 
-    def search_products(self, list_supermarket_id: list[int], search:str, page:int, sortby:SortBy, descending_order:bool) -> list[tuple[int, Product]]:
+    def search_products(self, supermarkets_id: list[int], search:str, page:int, sortby:SortBy, descending_order:bool) -> list[tuple[int, Product]]:
         list_products:list[list[tuple[int, Product]]] = [
             [(id, product) for product in self.supermarkets[id].search_products(search, page, sortby, descending_order)]
-            for id in list_supermarket_id
+            for id in supermarkets_id
         ]
 
         return (

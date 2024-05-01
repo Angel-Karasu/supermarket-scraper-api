@@ -25,8 +25,8 @@ def get_supermarkets() -> list[SuperMarket]: return SUPERMARKETS.supermarkets
 @app.get('/search_product')
 def search_product(
     search:str, page:int = 1, sortby:SortBy = SortBy.relevant, descending_order:bool = False,
-    list_supermarket_id:list[int] = Query()
-) -> list[tuple[int, Product]]: return SUPERMARKETS.search_products(list_supermarket_id, search, page, sortby, descending_order)
+    supermarkets_id:list[int] = Query()
+) -> list[tuple[int, Product]]: return SUPERMARKETS.search_products(supermarkets_id, search, page, sortby, descending_order)
 
 @app.get('/search_supermarkets')
 def search_supermarkets(name:str = '', address:str = '', postal_code:int = '', city:str = '') -> list[tuple[int, SuperMarket]]:
