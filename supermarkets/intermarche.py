@@ -19,16 +19,18 @@ class InterMarche(SuperMarket):
         products = []
 
         for product in soup.select('.stime-product-card-course'):
-            try: products.append(Product(
-                product.select_one('.stime-product--details__summary > p').text,
-                product.select_one('.stime-product--details__title').text,
-                product.select_one('.stime-product--details__image')['src'],
-                'https://' + BASE_URL + product.select_one('a')['href'],
-                float(product.select_one('.product--price').text.split()[0].replace(',', '.')),
-                float(product.select_one('.content-S-R').text.split()[-2].replace(',', '.')),
-                '€',
-                product.select_one('.content-S-R').text.split('/')[-1],
-            ))
+            try:
+                content_sr = product.select_one('.content-S-R').text
+                products.append(Product(
+                    product.select_one('.stime-product--details__summary > p').text,
+                    product.select_one('.stime-product--details__title').text + '\n' + content_sr.split('|')[0],
+                    product.select_one('.stime-product--details__image')['src'],
+                    'https://' + BASE_URL + product.select_one('a')['href'],
+                    float(product.select_one('.product--price').text.split()[0].replace(',', '.')),
+                    float(content_sr.split()[-2].replace(',', '.')),
+                    '€',
+                    product.select_one('.content-S-R').text.split('/')[-1],
+                ))
             except: pass
 
         return products
