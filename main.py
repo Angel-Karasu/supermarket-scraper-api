@@ -3,10 +3,10 @@ from heapq import merge
 from itertools import zip_longest
 
 from classes import Product, SortBy, SuperMarket
-from supermarkets import auchan, intermarche, monoprix
+from supermarkets import auchan, casino, intermarche, monoprix
 
 class SuperMarkets:
-    supermarkets:list[SuperMarket] = sum(map(lambda sm:sm.get_supermarkets(), [auchan, intermarche, monoprix]), [])
+    supermarkets:list[SuperMarket] = sum(map(lambda sm:sm.get_supermarkets(), [auchan, casino, intermarche, monoprix]), [])
     max_id:int = len(supermarkets) - 1
 
     def search_products(self, supermarkets_id: list[int], search:str, page:int, sortby:SortBy, descending_order:bool) -> list[tuple[int, Product]]:

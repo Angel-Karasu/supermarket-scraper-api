@@ -19,6 +19,7 @@ pip install -r requirements.txt;
 ## Compatible supermarkets
 
 - Auchan (Unable to select a specific supermarket)
+- Casino (Unable to select a specific supermarket)
 - Intermarché
 - Monoprix (Unable to select a specific supermarket)
 
