@@ -1,5 +1,5 @@
 from utils.classes import Address, Product, SortBy, SuperMarket
-from utils.scrap import bs4_request, get_redirect_url
+from utils.scrap import get_redirect_url
 
 BASE_URL = 'www.auchan.fr'
 
@@ -9,10 +9,9 @@ class Auchan(SuperMarket):
         sort += ('' if sortby == SortBy.price_absolute else 'unit') + 'price_pos'
         sort = 'default' if sortby == SortBy.relevant else sort
 
-        soup = bs4_request(
-            get_redirect_url(f'https://{BASE_URL}/recherche?text={search}')+ f'&sort={sort}&page={page}',
-            cookies=self.cookies,
-            html_element={'article'}
+        soup = self.bs4_request(
+            get_redirect_url(f'{self.url_origin()}/recherche?text={search}')+ f'&sort={sort}&page={page}',
+            {'article'}
         )
 
         products = []
@@ -27,7 +26,7 @@ class Auchan(SuperMarket):
                     product.select('.product-thumbnail__details span')[1].text if brand is None else brand.text,
                     product.select_one('.product-thumbnail__description').text.split('\n')[-2].strip(),
                     product.select_one('[itemprop="image"]')['content'],
-                    'https://' + BASE_URL + product.select_one('a')['href'],
+                    self.url_origin() + product.select_one('a')['href'],
                     price_absolute,
                     price_absolute if price_relative is None else float(price_relative.text.split('€')[0].replace(',', '.')),
                     '€',

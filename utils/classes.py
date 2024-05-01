@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from enum import Enum
 
+from utils.scrap import bs4_request
+
 @dataclass
 class Address:
     address:str
@@ -35,6 +37,13 @@ class SuperMarket:
 
     base_url:str
     cookies:dict[str, str]
+    
+    def bs4_request(self, url:str, html_element:str|dict[str, dict[str, str]] = 'body'):
+        return bs4_request(
+            url=f'{self.url_origin()}{url}' if url[0] == '/' else url,
+            cookies=self.cookies,
+            html_element=html_element
+        )
 
     def include(self, supermarket:'SuperMarket') -> bool:
         return (
@@ -43,3 +52,5 @@ class SuperMarket:
         )
 
     def search_products(self, search:str, page:int, sortby:SortBy, descending_order:bool) -> list[Product]: return []
+    
+    def url_origin(self) -> str: return 'https://' + self.base_url

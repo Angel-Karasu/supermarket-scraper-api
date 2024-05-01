@@ -1,5 +1,4 @@
 from utils.classes import Address, Product, SortBy, SuperMarket
-from utils.scrap import bs4_request
 
 BASE_URL = 'www.casino.fr'
 
@@ -7,10 +6,9 @@ class Casino(SuperMarket):
     def search_products(self, search:str, page:int, sortby:SortBy, descending_order:bool) -> list[Product]:
         sort = 52 + (sortby == SortBy.price_absolute) + 2*(sortby == SortBy.price_relative)
 
-        soup = bs4_request(
-            f'https://{BASE_URL}/ecommerce/recherche/WE38337/Acheter/{search}?SORT_ORDER={sort}|{int(descending_order)}&page={page}',
-            cookies=self.cookies,
-            html_element={'section':{'class':'product-item__inner'}}
+        soup = self.bs4_request(
+            f'/ecommerce/recherche/WE38337/Acheter/{search}?SORT_ORDER={sort}|{int(descending_order)}&page={page}',
+            {'section':{'class':'product-item__inner'}}
         )
 
         products = []
@@ -31,8 +29,8 @@ class Casino(SuperMarket):
             products.append(Product(
                 product.select_one('.product-item__brand').text,
                 product.select_one('.product-item__description').text.strip(),
-                'https://' + BASE_URL + product.select_one('img')['data-original'],
-                'https://' + BASE_URL + product.select_one('a')['href'],
+                self.url_origin() + product.select_one('img')['data-original'],
+                self.url_origin() + product.select_one('a')['href'],
                 price_absolute,
                 price_relative,
                 '€',

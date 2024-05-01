@@ -1,7 +1,7 @@
 from json import dumps
 
 from utils.classes import Address, Product, SortBy, SuperMarket
-from utils.scrap import bs4_request, json_request
+from utils.scrap import json_request
 
 BASE_URL = 'www.intermarche.com'
 
@@ -10,10 +10,9 @@ class InterMarche(SuperMarket):
         sort = 'prix' if sortby == SortBy.price_absolute else 'prixkg' if sortby == SortBy.price_relative else 'pertinence'
         order = ('de' if descending_order else '') + 'croissant'
 
-        soup = bs4_request(
-            f'https://{BASE_URL}/recherche/{search}?page={page}&trier={sort}&ordre={order}',
-            cookies=self.cookies,
-            html_element={'div': {'class':'stime-product-card-course'}}
+        soup = self.bs4_request(
+            f'/recherche/{search}?page={page}&trier={sort}&ordre={order}',
+            {'div': {'class':'stime-product-card-course'}}
         )
 
         products = []
@@ -25,7 +24,7 @@ class InterMarche(SuperMarket):
                     product.select_one('.stime-product--details__summary > p').text,
                     product.select_one('.stime-product--details__title').text + '\n' + content_sr.split('|')[0],
                     product.select_one('.stime-product--details__image')['src'],
-                    'https://' + BASE_URL + product.select_one('a')['href'],
+                    self.url_origin() + product.select_one('a')['href'],
                     float(product.select_one('.product--price').text.split()[0].replace(',', '.')),
                     float(content_sr.split()[-2].replace(',', '.')),
                     '€',

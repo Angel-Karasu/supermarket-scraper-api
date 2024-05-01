@@ -1,5 +1,6 @@
+from json import loads
+
 from utils.classes import Address, Product, SortBy, SuperMarket
-from utils.scrap import bs4_request, bs4_to_json
 
 BASE_URL = 'courses.monoprix.fr'
 
@@ -9,8 +10,8 @@ class Monoprix(SuperMarket):
         sort = 'price' if sortby == SortBy.price_absolute else 'pricePer' if sortby == SortBy.price_relative else ''
         sort += ('De' if descending_order else 'A') + 'scending'
 
-        soup = bs4_request(
-            f'https://{BASE_URL}/products/search?q={search}&sortBy={sort}',
+        soup = self.bs4_request(
+            f'/products/search?q={search}&sortBy={sort}',
             html_element={'div':{'class':'product-card-container'}}
         )
 
@@ -18,12 +19,12 @@ class Monoprix(SuperMarket):
 
         for product in soup.select('.product-card-container'):
             if product.select_one('[data-test="fop-featured"]') is None:
-                product_url = 'https://' + BASE_URL + product.select_one('a')['href']
+                product_url = self.url_origin() + product.select_one('a')['href']
                 
-                product_data = bs4_to_json(bs4_request(
+                product_data = loads(self.bs4_request(
                     product_url,
                     html_element={'script':{'data-test':'product-details-structured-data'}}
-                ).select_one('[data-test="product-details-structured-data"]'))
+                ).select_one('[data-test="product-details-structured-data"]').text)
 
                 price_per_unit = product.select_one('[data-test="fop-price-per-unit"]').text.split()
 
