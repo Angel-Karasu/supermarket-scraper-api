@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from enum import Enum
-from requests import Session
 
 @dataclass
 class Address:
