@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup, SoupStrainer
-from json import loads
 from requests import Session
 
 SESSION = Session()
@@ -8,10 +7,8 @@ SESSION.headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko
 def bs4_request(url:str, cookies:dict[str, str], html_element:str|dict[str, dict[str, str]]) -> BeautifulSoup:
     return BeautifulSoup(SESSION.get(url, cookies=cookies).content, 'lxml', parse_only=SoupStrainer(html_element))
 
-def bs4_to_json(soup: BeautifulSoup) -> dict: return loads(soup.text)
-
 def get_redirect_url(url:str, headers:dict[str, str] = {}, cookies:dict[str, str] = {}) -> str:
     return SESSION.get(url, headers=headers, cookies=cookies).url
 
 def json_request(url:str, headers:dict[str, str] = {}, cookies:dict[str, str] = {}) -> dict:
-    return loads(SESSION.get(url, headers=headers, cookies=cookies).text)
+    return SESSION.get(url, headers=headers, cookies=cookies).json()
