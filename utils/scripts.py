@@ -1,0 +1,1 @@
+def euro_to_float(euro:str) -> float: return float(euro.split('€')[0].replace(',', '.'))

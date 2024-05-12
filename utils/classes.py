@@ -1,13 +1,13 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 
-from utils.scrap import bs4_request
+from utils.scrap import bs4_request, SoupStrainer
 
 @dataclass
 class Address:
-    address:str
-    postal_code:int|str
-    city:str
+    address:str = ''
+    postal_code:int|str = ''
+    city:str = ''
 
     def include(self, address:'Address') -> bool:
         return self.address in address.address and str(self.postal_code) in str(address.postal_code) and self.city in address.city
@@ -33,17 +33,13 @@ class SortBy(str, Enum):
 @dataclass
 class SuperMarket:
     name:str
-    address:Address
+    address:Address = field(default_factory=Address)
 
-    base_url:str
-    cookies:dict[str, str]
+    base_url:str = ''
+    cookies:dict[str, str] = field(default_factory=dict)
     
-    def bs4_request(self, url:str, html_element:str|dict[str, dict[str, str]] = 'body'):
-        return bs4_request(
-            url=f'{self.url_origin()}{url}' if url[0] == '/' else url,
-            cookies=self.cookies,
-            html_element=html_element
-        )
+    def bs4_request(self, url:str, html_element:str = 'body', attrs:dict[str, str] = {}):
+        return bs4_request(f'{self.url_origin()}{url}' if url[0] == '/' else url, self.cookies, SoupStrainer(html_element, attrs))
 
     def include(self, supermarket:'SuperMarket') -> bool:
         return (

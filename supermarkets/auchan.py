@@ -1,5 +1,6 @@
-from utils.classes import Address, Product, SortBy, SuperMarket
+from utils.classes import Product, SortBy, SuperMarket
 from utils.scrap import get_redirect_url
+from utils.scripts import euro_to_float
 
 class Auchan(SuperMarket):
     def search_products(self, search:str, page:int, sortby:SortBy, descending_order:bool) -> list[Product]:
@@ -9,11 +10,10 @@ class Auchan(SuperMarket):
 
         soup = self.bs4_request(
             get_redirect_url(f'{self.url_origin()}/recherche?text={search}')+ f'&sort={sort}&page={page}',
-            {'article'}
+            'article'
         )
 
         products = []
-
         for product in soup.select('article'):
             try: 
                 brand = product.select_one('[itemprop="brand"]')
@@ -26,15 +26,12 @@ class Auchan(SuperMarket):
                     product.select_one('[itemprop="image"]')['content'],
                     self.url_origin() + product.select_one('a')['href'],
                     price_absolute,
-                    price_absolute if price_relative is None else float(price_relative.text.split('€')[0].replace(',', '.')),
-                    '€',
-                    'u' if price_relative is None else price_relative.text.split('/ ')[1],
+                    price_absolute if price_relative is None else euro_to_float(price_relative.text),
+                    '€', 'u' if price_relative is None else price_relative.text.split('/ ')[1],
                 ))
             except: pass
 
         return products
 
 def get_supermarkets() -> list[SuperMarket]:
-    return [Auchan('Auchan', Address('', '', ''), 'www.auchan.fr', {
-        'lark-journey': '0150148c-ed97-419e-a30c-d796fdf92aca',
-    })]
+    return [Auchan('Auchan', base_url='www.auchan.fr', cookies={'lark-journey': '9d43e4d0-c397-4ffc-a998-c0572174fd84'})]
