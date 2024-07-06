@@ -6,7 +6,7 @@ This is a simple project to make an API to scrap several supermarkets.
 
 Clone this repository, set the virtual environnement and install all requirements packages
 ```shell
-git clone https://github.com/Angel-Karasu/supermarket-scraper-api.git; cd supermarket-scraper-api;
+git clone https://codeberg.org/Angel-Karasu/supermarket-scraper-api.git; cd supermarket-scraper-api;
 virtualenv venv; source venv/bin/activate;
 pip install -r requirements.txt;
 ```
